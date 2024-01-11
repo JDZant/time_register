@@ -4,8 +4,6 @@ import time
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-
-
 from login import Login
 from time_registration import TimeRegistration
 

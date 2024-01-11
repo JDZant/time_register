@@ -1,10 +1,7 @@
 import os
-import time
 
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -19,7 +16,7 @@ class Login:
     def login(self, username, password):
         base_url = os.getenv('TIME_REG_URL')
         today = datetime.now().strftime("%Y-%m-%d")
-        # tomorrow = (datetime.now() + timedelta(days=1))
+        print(f"URL: {base_url}/{today}")
 
         # Navigate to the time registration page
         self.driver.get(f'{base_url}/{today}')
