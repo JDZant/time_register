@@ -27,7 +27,5 @@ time.sleep(1)
 # Register time
 time_registration_page.register_time()
 
-time.sleep(60)
-
 # Close the browser once done
 driver.quit()

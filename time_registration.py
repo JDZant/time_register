@@ -71,8 +71,6 @@ class TimeRegistration:
 
         self.wait_and_click(By.ID, info['select_id_1'])
         self.wait_and_clear_send_keys(By.ID, info['search_bar_id_1'], info['search_bar_value_1'], True)
-        # if info['time_placeholder'] == "10:30":
-        #     time.sleep(300)
         self.wait_and_click(By.ID, info['select_id_2'])
         self.wait_and_clear_send_keys(By.ID, info['search_bar_id_2'], info['search_bar_value_2'], True)
         self.enter_description_info(info['description'], info['description_index'])
