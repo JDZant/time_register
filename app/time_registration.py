@@ -72,6 +72,10 @@ class TimeRegistration:
             "description_index": 2
         }
 
+        # Enter initial start time
+        if start_time:
+            self.enter_start_time(start_time)
+
         # Enter the time, project data and description for the first row of time registration
         self.click_and_enter_value(preparation_info['select_id_1'], preparation_info['search_bar_id_1'],
                                    preparation_info['search_bar_value_1'])
@@ -91,4 +95,10 @@ class TimeRegistration:
         time.sleep(1)
         element.send_keys(Keys.ENTER)
 
-
+    def enter_start_time(self, start_time):
+        element = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, f"input.form-control.time-field[placeholder='08:30']")))
+        element.clear()
+        element.send_keys(start_time)
+        time.sleep(1)
+        element.send_keys(Keys.ENTER)
