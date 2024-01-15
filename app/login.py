@@ -16,10 +16,10 @@ class Login:
     def login(self, username, password):
         base_url = os.getenv('TIME_REG_URL')
         today = datetime.now().strftime("%Y-%m-%d")
-        print(f"URL: {base_url}/{today}")
+        tomorrow = (datetime.now() + timedelta(days=1))
 
         # Navigate to the time registration page
-        self.driver.get(f'{base_url}/{today}')
+        self.driver.get(f'{base_url}/{tomorrow}')
 
         # Wait for the login field to be present before attempting to interact with it
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "_username")))
