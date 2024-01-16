@@ -16,7 +16,7 @@ def run_time_registration(user_config):
     username = os.getenv('TIME_REG_USER')
     password = os.getenv('TIME_REG_PASS')
 
-    login = Login(driver)
+    login = Login(driver, user_config['date'])
 
     # Login
     login.login(username, password)
