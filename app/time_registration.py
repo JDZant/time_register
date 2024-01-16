@@ -16,10 +16,10 @@ class TimeRegistration:
         self.standup_info_time = 30
         self.time_registration_info_time = 15
 
-        #default time between placeholders (hours)
+        # default time between placeholders (hours)
         self.placeholder_interval = 1
 
-        # Set time registration arrays
+        # set time registration arrays
 
         # preparation_info is the only array that needs start_time_placeholder_id.
         # After that the start_times are based off the end times of the previous entry
@@ -43,9 +43,11 @@ class TimeRegistration:
         }
 
         standup_info = {
-            "end_placeholder_id": self.calculate_time(preparation_info['end_time_value'], 'hours', self.placeholder_interval),
+            "end_placeholder_id": self.calculate_time(preparation_info['end_time_value'], 'hours',
+                                                      self.placeholder_interval),
 
-            "end_time_value": self.calculate_time(preparation_info['end_time_value'], 'minutes', self.standup_info_time),
+            "end_time_value": self.calculate_time(preparation_info['end_time_value'], 'minutes',
+                                                  self.standup_info_time),
 
             "select_id_1": 's2id_autogen5',
             "search_bar_id_1": 's2id_autogen6_search',
@@ -60,9 +62,11 @@ class TimeRegistration:
         }
 
         time_registration_info = {
-            "end_placeholder_id": self.calculate_time(standup_info['end_time_value'], 'hours', self.placeholder_interval),
+            "end_placeholder_id": self.calculate_time(standup_info['end_time_value'], 'hours',
+                                                      self.placeholder_interval),
 
-            "end_time_value": self.calculate_time(standup_info['end_time_value'], 'minutes', self.time_registration_info_time),
+            "end_time_value": self.calculate_time(standup_info['end_time_value'],
+                                                  'minutes', self.time_registration_info_time),
 
             "select_id_1": 's2id_autogen18',
             "search_bar_id_1": 's2id_autogen19_search',
@@ -76,7 +80,7 @@ class TimeRegistration:
             "description_index": 2
         }
 
-        # First entry
+        # first entry
         self.enter_time(preparation_info['start_placeholder_id'], preparation_info['start_time_value'])
         self.enter_time(preparation_info['end_placeholder_id'], preparation_info['end_time_value'])
 
@@ -88,7 +92,7 @@ class TimeRegistration:
 
         self.enter_description_info(preparation_info['description'], preparation_info['description_index'])
 
-        # Second entry
+        # second entry
         self.enter_time(standup_info['end_placeholder_id'], standup_info['end_time_value'])
 
         self.click_and_enter_value(standup_info['select_id_1'], standup_info['search_bar_id_1'],
@@ -99,7 +103,7 @@ class TimeRegistration:
 
         self.enter_description_info(standup_info['description'], standup_info['description_index'])
 
-        # Third entry
+        # third entry
         self.enter_time(time_registration_info['end_placeholder_id'], time_registration_info['end_time_value'])
 
         self.click_and_enter_value(time_registration_info['select_id_1'], time_registration_info['search_bar_id_1'],
@@ -131,12 +135,12 @@ class TimeRegistration:
         element.send_keys(Keys.TAB)
 
     @staticmethod
-    def calculate_time(time, format, value):
+    def calculate_time(time_value, format_value, integer_value):
         # Convert start_time to a datetime object
-        start_time_obj = datetime.strptime(time, "%H:%M")
+        start_time_obj = datetime.strptime(time_value, "%H:%M")
 
         # Prepare the time delta arguments
-        time_delta_args = {format: value}
+        time_delta_args = {format_value: integer_value}
 
         # Add one hour to start_time_obj
         result_time_obj = start_time_obj + timedelta(**time_delta_args)
