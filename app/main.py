@@ -10,7 +10,7 @@ from app.time_registration import TimeRegistration
 load_dotenv()
 
 
-def run_time_registration(start_time):
+def run_time_registration(user_config):
     service = Service('/usr/bin/chromedriver')
     driver = webdriver.Chrome(service=service)
     username = os.getenv('TIME_REG_USER')
@@ -21,7 +21,7 @@ def run_time_registration(start_time):
     # Login
     login.login(username, password)
 
-    TimeRegistration(driver, start_time)
+    TimeRegistration(driver, user_config)
 
     # Close the browser once done
     driver.quit()

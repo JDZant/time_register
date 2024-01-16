@@ -8,13 +8,8 @@ import time
 
 
 class TimeRegistration:
-    def __init__(self, driver, start_time):
+    def __init__(self, driver, user_config):
         self.driver = driver
-
-        # Set default time values (minutes)
-        self.preparation_info_time = 30
-        self.standup_info_time = 30
-        self.time_registration_info_time = 15
 
         # default time between placeholders (hours)
         self.placeholder_interval = 1
@@ -25,10 +20,12 @@ class TimeRegistration:
         # After that the start_times are based off the end times of the previous entry
         preparation_info = {
             "start_placeholder_id": '08:30',
-            "end_placeholder_id": self.calculate_time(start_time, 'hours', self.placeholder_interval),
+            "end_placeholder_id": self.calculate_time(user_config['start_time'],
+                                                      'hours', self.placeholder_interval),
 
-            "start_time_value": start_time or '08:30',
-            "end_time_value": self.calculate_time(start_time, 'minutes', self.preparation_info_time),
+            "start_time_value": user_config['start_time'],
+            "end_time_value": self.calculate_time(user_config['start_time'], 'minutes',
+                                                  user_config['preparation_duration']),
 
             "select_id_1": 's2id_autogen1',
             "search_bar_id_1": 's2id_autogen2_search',
@@ -47,7 +44,7 @@ class TimeRegistration:
                                                       self.placeholder_interval),
 
             "end_time_value": self.calculate_time(preparation_info['end_time_value'], 'minutes',
-                                                  self.standup_info_time),
+                                                  user_config['standup_duration']),
 
             "select_id_1": 's2id_autogen5',
             "search_bar_id_1": 's2id_autogen6_search',
@@ -66,7 +63,7 @@ class TimeRegistration:
                                                       self.placeholder_interval),
 
             "end_time_value": self.calculate_time(standup_info['end_time_value'],
-                                                  'minutes', self.time_registration_info_time),
+                                                  'minutes', user_config['time_registration_duration']),
 
             "select_id_1": 's2id_autogen18',
             "search_bar_id_1": 's2id_autogen19_search',
@@ -114,6 +111,9 @@ class TimeRegistration:
 
         self.enter_description_info(time_registration_info['description'], time_registration_info['description_index'])
 
+        # submit time registration
+        self.click_save_button()
+
     def click_and_enter_value(self, container_id, searchbar_id, value):
         # first open container
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, container_id))).click()
@@ -159,3 +159,12 @@ class TimeRegistration:
             description_field.send_keys(description_text)
         else:
             raise IndexError("Input index out of range")
+
+    def click_save_button(self):
+        # Wait for the Save button to be clickable
+        save_button = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Save')]"))
+        )
+        # Click the button
+        save_button.click()
+        time.sleep(3)
