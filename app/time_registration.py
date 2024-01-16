@@ -10,23 +10,25 @@ import time
 class TimeRegistration:
     def __init__(self, driver, start_time):
         self.driver = driver
-        self.preparation_info_end_time_string = None
-        self.standup_info_end_time = None
-        self.time_registration_info_end_time = None
 
-        # Set default placeholder times
-        self.preparation_info_placeholder = "08:30"
-
-        # Set default time values
+        # Set default time values (minutes)
         self.preparation_info_time = 30
         self.standup_info_time = 30
         self.time_registration_info_time = 15
 
+        #default time between placeholders (hours)
+        self.placeholder_interval = 1
+
         # Set time registration arrays
 
+        # preparation_info is the only array that needs start_time_placeholder_id.
+        # After that the start_times are based off the end times of the previous entry
         preparation_info = {
-            "time_placeholder_identifier": self.preparation_info_placeholder,
-            "time_value": start_time or '09:00',
+            "start_placeholder_id": '08:30',
+            "end_placeholder_id": self.calculate_time(start_time, 'hours', self.placeholder_interval),
+
+            "start_time_value": start_time or '08:30',
+            "end_time_value": self.calculate_time(start_time, 'minutes', self.preparation_info_time),
 
             "select_id_1": 's2id_autogen1',
             "search_bar_id_1": 's2id_autogen2_search',
@@ -41,8 +43,9 @@ class TimeRegistration:
         }
 
         standup_info = {
-            "time_placeholder_identifier": None,
-            "time_value": self.standup_info_end_time or '09:30',
+            "end_placeholder_id": self.calculate_time(preparation_info['end_time_value'], 'hours', self.placeholder_interval),
+
+            "end_time_value": self.calculate_time(preparation_info['end_time_value'], 'minutes', self.standup_info_time),
 
             "select_id_1": 's2id_autogen5',
             "search_bar_id_1": 's2id_autogen6_search',
@@ -57,8 +60,9 @@ class TimeRegistration:
         }
 
         time_registration_info = {
-            "time_placeholder_identifier": None,
-            "time_value": self.time_registration_info_end_time or '09:45',
+            "end_placeholder_id": self.calculate_time(standup_info['end_time_value'], 'hours', self.placeholder_interval),
+
+            "end_time_value": self.calculate_time(standup_info['end_time_value'], 'minutes', self.time_registration_info_time),
 
             "select_id_1": 's2id_autogen18',
             "search_bar_id_1": 's2id_autogen19_search',
@@ -72,20 +76,39 @@ class TimeRegistration:
             "description_index": 2
         }
 
-        # If start time is entered use this
-        if start_time:
-            self.enter_start_time(start_time)
+        # First entry
+        self.enter_time(preparation_info['start_placeholder_id'], preparation_info['start_time_value'])
+        self.enter_time(preparation_info['end_placeholder_id'], preparation_info['end_time_value'])
 
-        # Enter the time, project data and description for the first row of time registration
         self.click_and_enter_value(preparation_info['select_id_1'], preparation_info['search_bar_id_1'],
                                    preparation_info['search_bar_value_1'])
 
         self.click_and_enter_value(preparation_info['select_id_2'], preparation_info['search_bar_id_2'],
                                    preparation_info['search_bar_value_2'])
 
-        # Enter the time, project data and description for the first second of time registration
+        self.enter_description_info(preparation_info['description'], preparation_info['description_index'])
 
-        # Enter the time, project data and description for the first third of time registration
+        # Second entry
+        self.enter_time(standup_info['end_placeholder_id'], standup_info['end_time_value'])
+
+        self.click_and_enter_value(standup_info['select_id_1'], standup_info['search_bar_id_1'],
+                                   standup_info['search_bar_value_1'])
+
+        self.click_and_enter_value(standup_info['select_id_2'], standup_info['search_bar_id_2'],
+                                   standup_info['search_bar_value_2'])
+
+        self.enter_description_info(standup_info['description'], standup_info['description_index'])
+
+        # Third entry
+        self.enter_time(time_registration_info['end_placeholder_id'], time_registration_info['end_time_value'])
+
+        self.click_and_enter_value(time_registration_info['select_id_1'], time_registration_info['search_bar_id_1'],
+                                   time_registration_info['search_bar_value_1'])
+
+        self.click_and_enter_value(time_registration_info['select_id_2'], time_registration_info['search_bar_id_2'],
+                                   time_registration_info['search_bar_value_2'])
+
+        self.enter_description_info(time_registration_info['description'], time_registration_info['description_index'])
 
     def click_and_enter_value(self, container_id, searchbar_id, value):
         # first open container
@@ -98,10 +121,37 @@ class TimeRegistration:
         time.sleep(1)
         element.send_keys(Keys.ENTER)
 
-    def enter_start_time(self, start_time):
+    def enter_time(self, id, time_value):
         element = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, f"input.form-control.time-field[placeholder='08:30']")))
+            EC.presence_of_element_located((By.CSS_SELECTOR,
+                                            f"input.form-control.time-field[placeholder='{id}']")))
         element.clear()
-        element.send_keys(start_time)
+        element.send_keys(time_value)
         time.sleep(1)
-        element.send_keys(Keys.ENTER)
+        element.send_keys(Keys.TAB)
+
+    @staticmethod
+    def calculate_time(time, format, value):
+        # Convert start_time to a datetime object
+        start_time_obj = datetime.strptime(time, "%H:%M")
+
+        # Prepare the time delta arguments
+        time_delta_args = {format: value}
+
+        # Add one hour to start_time_obj
+        result_time_obj = start_time_obj + timedelta(**time_delta_args)
+
+        # Format end_time_obj back to a string and return it
+        return result_time_obj.strftime("%H:%M")
+
+    def enter_description_info(self, description_text, input_index):
+        description_fields = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH, '//input[@type="text"][@placeholder="description"][@ng-model="model.description"]'))
+        )
+        if 0 <= input_index < len(description_fields):
+            description_field = description_fields[input_index]
+            description_field.clear()
+            description_field.send_keys(description_text)
+        else:
+            raise IndexError("Input index out of range")
