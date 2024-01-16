@@ -11,12 +11,12 @@ class TimeRegistration:
     def __init__(self, driver, user_config):
         self.driver = driver
 
-        # default time between placeholders (hours)
+        # Default time between placeholders (hours)
         self.placeholder_interval = 1
 
-        # set time registration arrays
+        # Set time registration arrays
 
-        # preparation_info is the only array that needs start_time_placeholder_id.
+        # Preparation_info is the only array that needs start_time_placeholder_id.
         # After that the start_times are based off the end times of the previous entry
         preparation_data = {
             "start_placeholder_id": '08:30',
@@ -77,9 +77,12 @@ class TimeRegistration:
             "description_index": 2
         }
 
+        # Call the functions to start the time registration
         self.start_time_registration(preparation_data)
         self.start_time_registration(standup_data)
         self.start_time_registration(time_registration_data)
+
+        # Press the save button
         self.click_save_button()
 
     def start_time_registration(self, data):
@@ -94,7 +97,7 @@ class TimeRegistration:
         # Proceed with the rest of the registration process.
         self.click_and_enter_value(data['select_id_1'], data['search_bar_id_1'], data['search_bar_value_1'])
         self.click_and_enter_value(data['select_id_2'], data['search_bar_id_2'], data['search_bar_value_2'])
-        self.enter_description_info(data['description'], data['description_index'])
+        self.enter_description_data(data['description'], data['description_index'])
 
     def click_and_enter_value(self, container_id, searchbar_id, value):
         # first open container
@@ -130,7 +133,7 @@ class TimeRegistration:
         # Format end_time_obj back to a string and return it
         return result_time_obj.strftime("%H:%M")
 
-    def enter_description_info(self, description_text, input_index):
+    def enter_description_data(self, description_text, input_index):
         description_fields = WebDriverWait(self.driver, 10).until(
             EC.presence_of_all_elements_located(
                 (By.XPATH, '//input[@type="text"][@placeholder="description"][@ng-model="model.description"]'))

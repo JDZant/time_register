@@ -2,6 +2,7 @@
 import sys
 from datetime import datetime
 import tkinter as tk
+from tkcalendar import DateEntry
 
 sys.path.append('/home/jos/projects/personal/time_register/')  # Add this line before your import
 
@@ -14,58 +15,63 @@ class MainWindow(tk.Frame):
         self.root = root
         self.root.title("Time Registration")
 
-        # date
-        self.date = tk.StringVar()
-        self.date.set(datetime.now().strftime("%Y-%m-%d"))
+        # Date
+        self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,
+                                    month=datetime.now().month, day=datetime.now().day)
 
-        # start time
+        # Start time
         self.start_time = tk.StringVar(None, '08:30')
 
-        # durations
+        # Durations
         self.preparation_duration = tk.IntVar(None, 30)
         self.standup_duration = tk.IntVar(None, 30)
         self.time_registration_duration = tk.IntVar(None, 15)
 
-        # labels
+        # Labels
         self.date_label = tk.Label(self, text="Enter date (Y-m-d)")
         self.start_time_label = tk.Label(self, text="Start time (H:M)")
         self.preparation_duration_label = tk.Label(self, text="Preparation duration (min)")
         self.standup_duration_label = tk.Label(self, text="Standup duration (min)")
         self.time_registration_duration_label = tk.Label(self, text="Time registration duration (min)")
 
-        # inputs
-        self.date_input = tk.Entry(self, textvariable=self.date)
+        # Inputs
+        # self.date_input = tk.Entry(self, textvariable=self.date)
         self.start_time_input = tk.Entry(self, textvariable=self.start_time)
         self.preparation_duration_input = tk.Entry(self, textvariable=self.preparation_duration)
         self.standup_duration_input = tk.Entry(self, textvariable=self.standup_duration)
         self.time_registration_duration_input = tk.Entry(self, textvariable=self.time_registration_duration)
 
-        # buttons
+        # Buttons
         self.start_button = tk.Button(self, text="Start", command=self.start_process)
 
-        # positioning
-        self.date_label.grid(row=1, column=0, padx=10, pady=10)
-        self.date_input.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
+        # Positioning
+        self.layout_widgets()
 
-        self.start_time_label.grid(row=2, column=0, padx=10, pady=10)
-        self.start_time_input.grid(row=2, column=1, padx=10, pady=10, sticky='ew')
+    def layout_widgets(self):
+        current_row = 1
+        padx, pady = 10, 10
 
-        self.preparation_duration_label.grid(row=3, column=0, padx=10, pady=10)
-        self.preparation_duration_input.grid(row=3, column=1, padx=10, pady=10, sticky='ew')
+        # List of widget pairs (label, input) for easy iteration
+        widget_pairs = [
+            (self.date_label, self.date_input),
+            (self.start_time_label, self.start_time_input),
+            (self.preparation_duration_label, self.preparation_duration_input),
+            (self.standup_duration_label, self.standup_duration_input),
+            (self.time_registration_duration_label, self.time_registration_duration_input),
+        ]
 
-        self.standup_duration_label.grid(row=4, column=0, padx=10, pady=10)
-        self.standup_duration_input.grid(row=4, column=1, padx=10, pady=10, sticky='ew')
+        # Iterate over the widget pairs and grid them
+        for label, input in widget_pairs:
+            label.grid(row=current_row, column=0, padx=padx, pady=pady, sticky='e')  # Align labels to the right
+            input.grid(row=current_row, column=1, padx=padx, pady=pady, sticky='ew')  # Stretch input to fill the cell
+            current_row += 1  # Increment the row counter for the next pair
 
-        self.time_registration_duration_label.grid(row=5, column=0, padx=10, pady=10)
-        self.time_registration_duration_input.grid(row=5, column=1, padx=10, pady=10,
-                                                   sticky='ew')
-
-        # Place the start button on the same row as the last input, but in the next column
-        self.start_button.grid(row=6, column=1, padx=10, pady=10, columnspan=2, sticky='ew')
+        # Special case for the start button, which spans two columns
+        self.start_button.grid(row=current_row, column=0, columnspan=2, padx=padx, pady=pady, sticky='ew')
 
     def start_process(self):
         user_config = {
-            'date': self.date.get(),
+            'date': self.date_input.get(),
             'start_time': self.start_time.get(),
             'preparation_duration': self.preparation_duration.get(),
             'standup_duration': self.standup_duration.get(),
