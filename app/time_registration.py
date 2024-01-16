@@ -72,13 +72,16 @@ class TimeRegistration:
             "description_index": 2
         }
 
-        # Enter initial start time
+        # If start time is entered use this
         if start_time:
             self.enter_start_time(start_time)
 
         # Enter the time, project data and description for the first row of time registration
         self.click_and_enter_value(preparation_info['select_id_1'], preparation_info['search_bar_id_1'],
                                    preparation_info['search_bar_value_1'])
+
+        self.click_and_enter_value(preparation_info['select_id_2'], preparation_info['search_bar_id_2'],
+                                   preparation_info['search_bar_value_2'])
 
         # Enter the time, project data and description for the first second of time registration
 
