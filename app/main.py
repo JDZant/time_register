@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from app.login import Login
-from app.time_registration import TimeRegistration
+from app.controllers.authentication_controller import Login
+from app.controllers.time_registration_controller import TimeRegistration
 
 # Load environment variables
 load_dotenv()

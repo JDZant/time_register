@@ -1,10 +1,10 @@
-# main_window.py
+# main_view.py
 import sys
 from datetime import datetime
 import tkinter as tk
 from tkcalendar import DateEntry
 
-sys.path.append('/home/jos/projects/personal/time_register/')  # Add this line before your import
+sys.path.append('//')  # Add this line before your import
 
 from app.main import run_time_registration
 
