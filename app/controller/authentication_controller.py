@@ -10,16 +10,15 @@ load_dotenv()
 
 
 class Login:
-    def __init__(self, driver):
+    def __init__(self, driver, date):
         self.driver = driver
+        self.date = date
 
     def login(self, username, password):
         base_url = os.getenv('TIME_REG_URL')
-        today = datetime.now().strftime("%Y-%m-%d")
-        tomorrow = (datetime.now() + timedelta(days=1))
 
         # Navigate to the time registration page
-        self.driver.get(f'{base_url}/{tomorrow}')
+        self.driver.get(f'{base_url}/{self.date}')
 
         # Wait for the login field to be present before attempting to interact with it
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "_username")))
