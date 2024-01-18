@@ -2,14 +2,14 @@
 from datetime import datetime
 import tkinter as tk
 from tkcalendar import DateEntry
-from app.controller.authentication_controller import Login
-from app.controller.time_registration_controller import TimeRegistration
+from app.controller.authentication_controller import AuthenticationController
+from app.controller.time_registration_controller import TimeRegistrationController
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
 
-class MainWindow(tk.Frame):
+class MainView(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
         self.root = root
@@ -84,10 +84,10 @@ class MainWindow(tk.Frame):
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
 
-        login = Login(driver, user_config['date'])
+        login = AuthenticationController(driver, user_config['date'])
         login.login(username, password)
 
-        TimeRegistration(driver, user_config)
+        TimeRegistrationController(driver, user_config)
 
         # Close the browser once done
         driver.quit()

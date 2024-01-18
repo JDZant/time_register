@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class TimeRegistration:
+class TimeRegistrationController:
     def __init__(self, driver, user_config):
         self.driver = driver
 
