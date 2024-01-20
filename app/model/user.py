@@ -10,7 +10,6 @@ class User(BaseModel):
         self.password = None
         self.email = None
 
-
     @classmethod
     def find_by_email(cls, email):
         db_connection = cls.get_db_connection()

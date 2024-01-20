@@ -56,6 +56,7 @@ class LoginView(tk.Frame):
                 messagebox.showerror("Registration Failed", message)
         else:
             # Here you would call the auth controller's login method
+            print(email, password)
             success, message = self.auth_controller.login_user(email, password)
             if success:
                 messagebox.showinfo("Success", "You are now logged in.")
