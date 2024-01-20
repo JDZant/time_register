@@ -1,20 +1,19 @@
-# user.py in the model directory
 import bcrypt
 
-from .base_model import BaseModel
+from app.model.base.base_model import BaseModel
 
 
 class User(BaseModel):
-    def __init__(self, email, password, db_connection):
-        super().__init__(db_connection)
-        self.email = email
-        self.set_password(password)
+    def __init__(self):
+        super().__init__()
         self.id = None
-        self.email = email
-        self.password = password
+        self.password = None
+        self.email = None
+
 
     @classmethod
-    def find_by_email(cls, db_connection, email):
+    def find_by_email(cls, email):
+        db_connection = cls.get_db_connection()
         cursor = db_connection.cursor(dictionary=True)
         query = "SELECT * FROM users WHERE email = %s"
         val = (email,)
@@ -22,29 +21,36 @@ class User(BaseModel):
         result = cursor.fetchone()
         cursor.close()
         if result:
-            user = cls(result['email'], result['password_hash'])
+            user = cls(result['email'], result['password'])
             user.id = result['id']
             return user
         return None
 
     def delete(self):
+        db_connection = self.get_db_connection()
+        cursor = db_connection.cursor()
         query = "DELETE FROM users WHERE id = %s"
         val = (self.id,)
-        self.cursor.execute(query, val)
+        cursor.execute(query, val)
+        db_connection.commit()
+        cursor.close()
 
     def set_password(self, new_password):
-        # Hash the new password
         hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
         self.password = hashed.decode('utf-8')
 
+    def set_email(self, email):
+        self.email = email
+
     def check_password(self, password):
-        # Check the password against the hashed version
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def save(self):
-        # Ensure that self.password contains the hashed password before saving
-        query = "INSERT INTO users (email, password_hash) VALUES (%s, %s)"
+        db_connection = self.get_db_connection()
+        cursor = db_connection.cursor()
+        query = "INSERT INTO users (email, password) VALUES (%s, %s)"
         val = (self.email, self.password)
-        self.cursor.execute(query, val)
-        self.id = self.cursor.lastrowid
-
+        cursor.execute(query, val)
+        db_connection.commit()
+        self.id = cursor.lastrowid
+        cursor.close()

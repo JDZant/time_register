@@ -1,17 +1,16 @@
+# main.py (or wherever your main function resides)
 import os
-import mysql.connector
 import tkinter as tk
-from app.controller.authentication_controller import AuthenticationController
 from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 
+from app.controller.base.base_controller import BaseController
+from app.database.database_connection import DatabaseConnection
+from app.model.base.base_model import BaseModel
+from app.controller.authentication_controller import AuthenticationController
 from app.view.login_view import LoginView
 
 # Load environment variables
 load_dotenv()
-service = Service('/usr/bin/chromedriver')
-driver = webdriver.Chrome(service=service)
 
 db_config = {
     'host': os.getenv('DB_HOST'),
@@ -21,31 +20,23 @@ db_config = {
 }
 
 
-def create_db_connection(config):
-    try:
-        connection = mysql.connector.connect(**config)
-        if connection.is_connected():
-            return connection
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return None
-
-
 def main():
-    db_connection = create_db_connection(db_config)
+    db_connection = DatabaseConnection.get_instance(db_config)
     if db_connection:
-        root = tk.Tk()  # Create the main Tkinter window
-        auth_controller = AuthenticationController(db_connection=db_connection, driver=driver)
+        root = tk.Tk()
+        root.title(os.getenv('APPLICATION_NAME'))
+        root.geometry("400x200")
 
-        # Create an instance of LoginView with the required arguments
+        BaseModel.set_db_connection(db_connection)
+        BaseController.set_db_connection(db_connection)
+
+        auth_controller = AuthenticationController()
         login_view = LoginView(auth_controller, master=root)
 
-        login_view.pack()  # Pack the login_view into the root window
-        root.mainloop()  # Start the Tkinter event loop
+        login_view.pack()
+        root.mainloop()
     else:
         print("Failed to connect to the database")
-        if db_connection and db_connection.is_connected():
-            db_connection.close()
 
 
 if __name__ == "__main__":
