@@ -36,7 +36,7 @@ class TimeRegistrationController:
             "search_bar_value_2": 'Overige werkzaamheden (specificeer)',
 
             "description": "Opstarten pc/laptop, klaarzetten werkomgeving, dag voorbereiden",
-            "description_index": 0
+            "description_index": 0,
         }
 
         standup_data = {
@@ -55,7 +55,7 @@ class TimeRegistrationController:
             "search_bar_value_2": 'Vergaderen en stand-up',
 
             "description": "Stand-up",
-            "description_index": 1
+            "description_index": 1,
         }
 
         time_registration_data = {
@@ -74,7 +74,7 @@ class TimeRegistrationController:
             "search_bar_value_2": 'Bijwerken eigen tijdregistratie',
 
             "description": "Bijwerken eigen tijdregistratie",
-            "description_index": 2
+            "description_index": 2,
         }
 
         # Call the functions to start the time registration

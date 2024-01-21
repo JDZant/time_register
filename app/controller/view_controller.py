@@ -1,5 +1,6 @@
 import tkinter as tk
 from ..view.login_view import LoginView
+from ..view.main_view import MainView
 
 
 # import other views as needed
@@ -16,7 +17,6 @@ class ViewController:
 
     def show_main_view(self):
         self.clear_current_view()
-        from ..view.main_view import MainView
         self.current_view = MainView(master=self.root)
         self.current_view.pack()
 

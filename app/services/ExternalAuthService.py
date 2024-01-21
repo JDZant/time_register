@@ -19,6 +19,9 @@ class ExternalAuthService:
             service = Service('/usr/bin/chromedriver')
             self.driver = webdriver.Chrome(service=service)
 
+    def get_chrome_driver(self):
+        return self.driver
+
     @staticmethod
     def authenticate(username, password):
         # Use Selenium to log in to the external time registration website.

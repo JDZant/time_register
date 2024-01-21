@@ -79,16 +79,10 @@ class MainView(tk.Frame):
             'time_registration_duration': self.time_registration_duration.get(),
         }
 
-        # Instantiate the controllers
-        service = Service('/usr/bin/chromedriver')
-        driver = webdriver.Chrome(service=service)
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
+        auth_service = ExternalAuthService()
+        auth_service.initialize_driver()
+        auth_service.login(username, password, user_config['date'])
+        TimeRegistrationController(auth_service.get_chrome_driver(), user_config)
 
-        login = ExternalAuthService()
-        login.login(username, password, user_config['date'])
-
-        TimeRegistrationController(driver, user_config)
-
-        # Close the browser once done
-        driver.quit()
