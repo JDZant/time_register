@@ -149,7 +149,7 @@ class TimeRegistrationController:
     def click_save_button(self):
         # Wait for the Save button to be clickable
         save_button = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Save')]"))
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Opslaan')]"))
         )
         # Click the button
         save_button.click()
