@@ -136,8 +136,9 @@ class TimeRegistrationController:
     def enter_description_data(self, description_text, input_index):
         description_fields = WebDriverWait(self.driver, 10).until(
             EC.presence_of_all_elements_located(
-                (By.XPATH, '//input[@type="text"][@placeholder="description"][@ng-model="model.description"]'))
+                (By.XPATH, '//input[@type="text"][@placeholder="omschrijving"][@ng-model="model.description"]'))
         )
+        print(description_fields)
         if 0 <= input_index < len(description_fields):
             description_field = description_fields[input_index]
             description_field.clear()
