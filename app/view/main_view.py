@@ -10,10 +10,10 @@ from selenium.webdriver.chrome.service import Service
 
 
 class MainView(tk.Frame):
-    def __init__(self, root):
-        super().__init__(root)
-        self.root = root
-        self.root.title("Time Registration")
+    def __init__(self, master):
+        super().__init__(master)
+        self.master = master
+        self.master.title("Time Registration")
 
         # Date
         self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,

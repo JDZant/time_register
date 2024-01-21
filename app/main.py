@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from app.controller.base.base_controller import BaseController
 from app.database.database_connection import DatabaseConnection
 from app.model.base.base_model import BaseModel
-from app.controller.authentication_controller import AuthenticationController
+from app.controller.view_controller import ViewController
+
 from app.view.login_view import LoginView
 
 # Load environment variables
@@ -27,13 +28,11 @@ def main():
         root.title(os.getenv('APPLICATION_NAME'))
         root.geometry("400x200")
 
+        view_controller = ViewController(root)
+        view_controller.show_login_view()
+
         BaseModel.set_db_connection(db_connection)
         BaseController.set_db_connection(db_connection)
-
-        auth_controller = AuthenticationController()
-        login_view = LoginView(auth_controller, master=root)
-
-        login_view.pack()
         root.mainloop()
     else:
         print("Failed to connect to the database")

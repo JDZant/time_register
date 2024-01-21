@@ -1,12 +1,20 @@
 import tkinter as tk
 from tkinter import messagebox
+from app.controller.authentication_controller import AuthenticationController
 
 
 class LoginView(tk.Frame):
-    def __init__(self, auth_controller, master=None):
+    def __init__(self, master=None, on_login_success=None):
         super().__init__(master)
+        self.auth_controller = AuthenticationController()
+        self.on_login_success = on_login_success
+
+        self.email_label = None
+        self.email_input = None
+        self.password_label = None
+        self.password_input = None
+        self.action_button = None
         self.master = master
-        self.auth_controller = auth_controller
         self.is_register = False  # State to track whether we are in login or register mode
         self.create_widgets()
 
@@ -46,19 +54,13 @@ class LoginView(tk.Frame):
         password = self.password_input.get()
 
         if self.is_register:
-            # Call the register function of the auth controller
             success, message = self.auth_controller.register_user(email, password)
             if success:
                 messagebox.showinfo("Success", message)
-                # Optionally switch back to login mode
                 self.toggle_login_register()
             else:
                 messagebox.showerror("Registration Failed", message)
         else:
-            # Here you would call the auth controller's login method
-            print(email, password)
-            success, message = self.auth_controller.login_user(email, password)
-            if success:
-                messagebox.showinfo("Success", "You are now logged in.")
-            else:
-                messagebox.showerror("Login Failed", message)
+            if self.auth_controller.login_user(email, password):
+                if self.on_login_success:
+                    self.on_login_success()

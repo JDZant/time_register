@@ -12,17 +12,11 @@ class AuthenticationController(BaseController):
         self.external_auth_service = ExternalAuthService()
 
     def login_user(self, email, password):
-        # This method is for logging into the application itself.
         try:
             user = User()
-            if user.check_password(password):
-                # User authenticated, proceed to application
+            if user.auth(email, password):
                 return True
-            else:
-                # Authentication failed
-                return False
         except Exception as e:
-            # Handle exception, such as a user not found
             return False
 
     def register_user(self, email, password):
@@ -39,5 +33,4 @@ class AuthenticationController(BaseController):
 
             return True, "User registered successfully."
         except Exception as e:
-            # Log the exception or handle it as needed
             return False, f"An error occurred: {e}"
