@@ -127,10 +127,8 @@ class TimeRegistrationController:
         # Prepare the time delta arguments
         time_delta_args = {format_value: integer_value}
 
-        # Add one hour to start_time_obj
         result_time_obj = start_time_obj + timedelta(**time_delta_args)
 
-        # Format end_time_obj back to a string and return it
         return result_time_obj.strftime("%H:%M")
 
     def enter_description_data(self, description_text, input_index):
