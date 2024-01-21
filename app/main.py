@@ -26,7 +26,6 @@ def main():
     if db_connection:
         root = tk.Tk()
         root.title(os.getenv('APPLICATION_NAME'))
-        root.geometry("400x200")
 
         view_controller = ViewController(root)
         view_controller.show_login_view()

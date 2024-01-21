@@ -7,6 +7,7 @@ from app.controller.time_registration_controller import TimeRegistrationControll
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from ..services.ExternalAuthService import ExternalAuthService
 
 
 class MainView(tk.Frame):
@@ -84,8 +85,8 @@ class MainView(tk.Frame):
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
 
-        login = AuthenticationController(driver, user_config['date'])
-        login.login(username, password)
+        login = ExternalAuthService()
+        login.login(username, password, user_config['date'])
 
         TimeRegistrationController(driver, user_config)
 

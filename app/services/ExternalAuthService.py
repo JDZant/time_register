@@ -4,7 +4,8 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class ExternalAuthService:
@@ -27,12 +28,12 @@ class ExternalAuthService:
         success = True  # Change based on actual success or failure
         return success
 
-    def login(self, username, password):
+    def login(self, username, password, date):
         self.initialize_driver()
         base_url = os.getenv('TIME_REG_URL')
 
         # Navigate to the time registration page
-        self.driver.get(f'{base_url}/2024-01-18')
+        self.driver.get(f'{base_url}/{date}')
 
         # Wait for the login field to be present before attempting to interact with it
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "_username")))
