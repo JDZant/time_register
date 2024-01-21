@@ -1,20 +1,40 @@
-# main.py
+# main.py (or wherever your main function resides)
 import os
-from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from app.view.main_view import MainWindow
 import tkinter as tk
+from dotenv import load_dotenv
+
+from app.controller.base.base_controller import BaseController
+from app.database.database_connection import DatabaseConnection
+from app.model.base.base_model import BaseModel
+from app.controller.view_controller import ViewController
+
+from app.view.login_view import LoginView
 
 # Load environment variables
 load_dotenv()
 
+db_config = {
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USERNAME'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_DATABASE'),
+}
+
 
 def main():
-    root = tk.Tk()
-    app = MainWindow(root)
-    app.grid()
-    root.mainloop()
+    db_connection = DatabaseConnection.get_instance(db_config)
+    if db_connection:
+        root = tk.Tk()
+        root.title(os.getenv('APPLICATION_NAME'))
+
+        view_controller = ViewController(root)
+        view_controller.show_login_view()
+
+        BaseModel.set_db_connection(db_connection)
+        BaseController.set_db_connection(db_connection)
+        root.mainloop()
+    else:
+        print("Failed to connect to the database")
 
 
 if __name__ == "__main__":

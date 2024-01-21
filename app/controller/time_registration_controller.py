@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class TimeRegistration:
+class TimeRegistrationController:
     def __init__(self, driver, user_config):
         self.driver = driver
 
@@ -36,7 +36,7 @@ class TimeRegistration:
             "search_bar_value_2": 'Overige werkzaamheden (specificeer)',
 
             "description": "Opstarten pc/laptop, klaarzetten werkomgeving, dag voorbereiden",
-            "description_index": 0
+            "description_index": 0,
         }
 
         standup_data = {
@@ -55,7 +55,7 @@ class TimeRegistration:
             "search_bar_value_2": 'Vergaderen en stand-up',
 
             "description": "Stand-up",
-            "description_index": 1
+            "description_index": 1,
         }
 
         time_registration_data = {
@@ -74,7 +74,7 @@ class TimeRegistration:
             "search_bar_value_2": 'Bijwerken eigen tijdregistratie',
 
             "description": "Bijwerken eigen tijdregistratie",
-            "description_index": 2
+            "description_index": 2,
         }
 
         # Call the functions to start the time registration
@@ -136,8 +136,9 @@ class TimeRegistration:
     def enter_description_data(self, description_text, input_index):
         description_fields = WebDriverWait(self.driver, 10).until(
             EC.presence_of_all_elements_located(
-                (By.XPATH, '//input[@type="text"][@placeholder="description"][@ng-model="model.description"]'))
+                (By.XPATH, '//input[@type="text"][@placeholder="omschrijving"][@ng-model="model.description"]'))
         )
+        print(description_fields)
         if 0 <= input_index < len(description_fields):
             description_field = description_fields[input_index]
             description_field.clear()
@@ -148,7 +149,7 @@ class TimeRegistration:
     def click_save_button(self):
         # Wait for the Save button to be clickable
         save_button = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Save')]"))
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Opslaan')]"))
         )
         # Click the button
         save_button.click()

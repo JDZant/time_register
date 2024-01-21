@@ -2,18 +2,19 @@
 from datetime import datetime
 import tkinter as tk
 from tkcalendar import DateEntry
-from app.controller.authentication_controller import Login
-from app.controller.time_registration_controller import TimeRegistration
+from app.controller.authentication_controller import AuthenticationController
+from app.controller.time_registration_controller import TimeRegistrationController
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from ..services.ExternalAuthService import ExternalAuthService
 
 
-class MainWindow(tk.Frame):
-    def __init__(self, root):
-        super().__init__(root)
-        self.root = root
-        self.root.title("Time Registration")
+class MainView(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master)
+        self.master = master
+        self.master.title("Time Registration")
 
         # Date
         self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,
@@ -78,16 +79,10 @@ class MainWindow(tk.Frame):
             'time_registration_duration': self.time_registration_duration.get(),
         }
 
-        # Instantiate the controllers
-        service = Service('/usr/bin/chromedriver')
-        driver = webdriver.Chrome(service=service)
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
+        auth_service = ExternalAuthService()
+        auth_service.initialize_driver()
+        auth_service.login(username, password, user_config['date'])
+        TimeRegistrationController(auth_service.get_chrome_driver(), user_config)
 
-        login = Login(driver, user_config['date'])
-        login.login(username, password)
-
-        TimeRegistration(driver, user_config)
-
-        # Close the browser once done
-        driver.quit()
