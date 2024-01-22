@@ -28,11 +28,16 @@ def main():
         root.title(os.getenv('APPLICATION_NAME'))
         root.geometry('600x300')
 
-        view_controller = ViewController(root)
-        view_controller.show_login_view()
-
+        # Database init
         BaseModel.set_db_connection(db_connection)
         BaseController.set_db_connection(db_connection)
+
+        # ViewController init
+        view_controller = ViewController(root)
+
+        # Show login view
+        view_controller.show_login_view()
+
         root.mainloop()
     else:
         print("Failed to connect to the database")

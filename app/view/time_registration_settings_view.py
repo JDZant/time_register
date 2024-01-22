@@ -11,7 +11,6 @@ class TimeRegistrationSettingsView(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
-        self.master.title("Time Registration Settings")
 
         # Date
         self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,
