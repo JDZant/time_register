@@ -19,6 +19,7 @@ class LoginView(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        self.pack(anchor='center', expand=True)
         # Email Label and Entry
         self.email_label = tk.Label(self, text="Nitro email")
         self.email_label.grid(row=0, column=0, sticky="e", padx=5, pady=10)

@@ -4,10 +4,13 @@ import tkinter as tk
 from tkcalendar import DateEntry
 from app.controller.time_registration_controller import TimeRegistrationController
 import os
+
+from ..controller.general_view_controller import GeneralViewController
+from ..controller.main_controller import MainController
 from ..services.ExternalAuthService import ExternalAuthService
 
 
-class GeneralView(tk.Frame):
+class GeneralView(tk.Frame, MainController):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
@@ -32,7 +35,6 @@ class GeneralView(tk.Frame):
         self.time_registration_duration_label = tk.Label(self, text="Time registration duration (min)")
 
         # Inputs
-        # self.date_input = tk.Entry(self, textvariable=self.date)
         self.start_time_input = tk.Entry(self, textvariable=self.start_time)
         self.preparation_duration_input = tk.Entry(self, textvariable=self.preparation_duration)
         self.standup_duration_input = tk.Entry(self, textvariable=self.standup_duration)
@@ -40,6 +42,7 @@ class GeneralView(tk.Frame):
 
         # Buttons
         self.start_button = tk.Button(self, text="Start", command=self.start_process)
+        self.save_as = tk.Button(self, text="Save as..", command=GeneralViewController(self.get_root).show_save_as)
 
         # Positioning
         self.layout_widgets()
@@ -64,7 +67,8 @@ class GeneralView(tk.Frame):
             current_row += 1  # Increment the row counter for the next pair
 
         # Special case for the start button, which spans two columns
-        self.start_button.grid(row=current_row, column=0, columnspan=2, padx=padx, pady=pady, sticky='ew')
+        self.start_button.grid(row=current_row, column=1, columnspan=1, padx=padx, pady=pady, sticky='ew')
+        self.save_as.grid(row=current_row, column=3, columnspan=1, padx=padx, pady=pady, sticky='ew')
 
     def start_process(self):
         user_config = {
@@ -81,4 +85,5 @@ class GeneralView(tk.Frame):
         auth_service.initialize_driver()
         auth_service.login(username, password, user_config['date'])
         TimeRegistrationController(auth_service.get_chrome_driver(), user_config)
+
 

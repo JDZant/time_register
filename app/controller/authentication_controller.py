@@ -1,13 +1,13 @@
 from dotenv import load_dotenv
 
-from app.controller.base.base_controller import BaseController
+from app.database.database_connection_manager import DatabaseConnectionManager
 from ..model.user import User
 from ..services.ExternalAuthService import ExternalAuthService
 
 load_dotenv()
 
 
-class AuthenticationController(BaseController):
+class AuthenticationController(DatabaseConnectionManager):
     def __init__(self):
         self.external_auth_service = ExternalAuthService()
 

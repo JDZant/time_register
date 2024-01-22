@@ -2,9 +2,10 @@ from ..model.base.base_model import BaseModel
 
 
 class TimeRegistrationConfig(BaseModel):
-    def __init__(self, start_date=None, start_time=None, preparation_duration=None, standup_duration=None,
+    def __init__(self,name=None, start_date=None, start_time=None, preparation_duration=None, standup_duration=None,
                  time_registration_duration=None):
         super().__init__()
+        self.name = name
         self.start_date = start_date
         self.start_time = start_time
         self.preparation_duration = preparation_duration
@@ -12,8 +13,8 @@ class TimeRegistrationConfig(BaseModel):
         self.time_registration_duration = time_registration_duration
 
     def store(self):
-        query = 'INSERT INTO time_registration_configs (start_date, start_time, preparation_duration,' \
-                ' standup_duration, time_registration_duration) VALUES (%s, %s, %s, %s, %s)'
+        query = 'INSERT INTO time_registration_configs (name, start_date, start_time, preparation_duration,' \
+                ' standup_duration, time_registration_duration) VALUES (%s, %s, %s, %s, %s, %s)'
         val = (self.start_date, self.start_time, self.preparation_duration, self.standup_duration,
                self.time_registration_duration)
         try:
@@ -25,8 +26,8 @@ class TimeRegistrationConfig(BaseModel):
             print(f"An error occurred: {e}")
 
     def update(self):
-        query = 'UPDATE time_registration_configs SET start_date = %s, start_time = %s, preparation_duration = %s,' \
-                ' standup_duration = %s, time_registration_duration = %s WHERE id = %s'
+        query = 'UPDATE time_registration_configs SET name = %s, start_date = %s, start_time = %s, preparation_duration' \
+                ' = %s, standup_duration = %s, time_registration_duration = %s WHERE id = %s'
         val = (self.start_date, self.start_time, self.preparation_duration, self.standup_duration,
                self.time_registration_duration, self.id)
 
@@ -38,7 +39,7 @@ class TimeRegistrationConfig(BaseModel):
             print(f"An error occurred: {e}")
 
     def get_by_id(self, id):
-        query = 'SELECT start_date, start_time, preparation_duration,' \
+        query = 'SELECT name, start_date, start_time, preparation_duration,' \
                 ' standup_duration, time_registration_duration FROM time_registration_configs WHERE id = %s'
 
         try:
@@ -56,7 +57,7 @@ class TimeRegistrationConfig(BaseModel):
             return None
 
     def get_all(self):
-        query = 'SELECT id, start_date, start_time, preparation_duration,' \
+        query = 'SELECT id, name, start_date, start_time, preparation_duration,' \
                 ' standup_duration, time_registration_duration FROM time_registration_configs'
 
         try:

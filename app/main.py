@@ -3,12 +3,12 @@ import os
 import tkinter as tk
 from dotenv import load_dotenv
 
-from app.controller.base.base_controller import BaseController
+from app.controller.general_view_controller import GeneralViewController
+from app.controller.main_controller import MainController
+from app.database.database_connection_manager import DatabaseConnectionManager
 from app.database.database_connection import DatabaseConnection
 from app.model.base.base_model import BaseModel
-from app.controller.view_controller import ViewController
-
-from app.view.login_view import LoginView
+from app.controller.navigation_controller import NavigationController
 
 # Load environment variables
 load_dotenv()
@@ -30,13 +30,14 @@ def main():
 
         # Database init
         BaseModel.set_db_connection(db_connection)
-        BaseController.set_db_connection(db_connection)
+        DatabaseConnectionManager.set_db_connection(db_connection)
 
         # ViewController init
-        view_controller = ViewController(root)
+        MainController(root)
+        navigation_controller = NavigationController(root)
 
         # Show login view
-        view_controller.show_login_view()
+        navigation_controller.show_login_view()
 
         root.mainloop()
     else:
