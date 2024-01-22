@@ -1,20 +1,17 @@
-# main_view.py
+# time_registration_settings_view.py
 from datetime import datetime
 import tkinter as tk
 from tkcalendar import DateEntry
-from app.controller.authentication_controller import AuthenticationController
 from app.controller.time_registration_controller import TimeRegistrationController
 import os
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from ..services.ExternalAuthService import ExternalAuthService
 
 
-class MainView(tk.Frame):
+class TimeRegistrationSettingsView(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
-        self.master.title("Time Registration")
+        self.master.title("Time Registration Settings")
 
         # Date
         self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,

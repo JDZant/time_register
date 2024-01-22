@@ -20,13 +20,13 @@ class LoginView(tk.Frame):
 
     def create_widgets(self):
         # Email Label and Entry
-        self.email_label = tk.Label(self, text="Email:")
+        self.email_label = tk.Label(self, text="Nitro email")
         self.email_label.grid(row=0, column=0, sticky="e", padx=5, pady=10)
         self.email_input = tk.Entry(self)
         self.email_input.grid(row=0, column=1, padx=5, pady=5)
 
         # Password Label and Entry
-        self.password_label = tk.Label(self, text="Password:")
+        self.password_label = tk.Label(self, text="Nitro password")
         self.password_label.grid(row=1, column=0, sticky="e", padx=5, pady=5)
         self.password_input = tk.Entry(self, show="*")
         self.password_input.grid(row=1, column=1, padx=5, pady=5)

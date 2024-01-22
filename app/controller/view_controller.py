@@ -1,6 +1,6 @@
 import tkinter as tk
 from ..view.login_view import LoginView
-from ..view.main_view import MainView
+from ..view.time_registration_settings_view import TimeRegistrationSettingsView
 
 
 # import other views as needed
@@ -17,7 +17,7 @@ class ViewController:
 
     def show_main_view(self):
         self.clear_current_view()
-        self.current_view = MainView(master=self.root)
+        self.current_view = TimeRegistrationSettingsView(master=self.root)
         self.current_view.pack()
 
     def clear_current_view(self):

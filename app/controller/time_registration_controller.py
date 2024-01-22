@@ -11,6 +11,8 @@ class TimeRegistrationController:
     def __init__(self, driver, user_config):
         self.driver = driver
 
+        # TODO Add the data to a model and store it in the database.
+
         # Default time between placeholders (hours)
         self.placeholder_interval = 1
 
@@ -130,6 +132,8 @@ class TimeRegistrationController:
         result_time_obj = start_time_obj + timedelta(**time_delta_args)
 
         return result_time_obj.strftime("%H:%M")
+
+    # TODO find a way to reliable find the inputs, the way it is done now is language dependant
 
     def enter_description_data(self, description_text, input_index):
         description_fields = WebDriverWait(self.driver, 10).until(
