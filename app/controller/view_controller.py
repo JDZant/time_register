@@ -1,7 +1,7 @@
 from tkinter import ttk
 
 from ..view.login_view import LoginView
-from ..view.time_registration_settings_view import TimeRegistrationSettingsView
+from ..view.general_view import GeneralView
 import tkinter as tk
 
 
@@ -33,7 +33,7 @@ class ViewController:
 
     def show_main_view(self):
         self.clear_current_view()
-        self.current_view = TimeRegistrationSettingsView(master=self.general_tab)
+        self.current_view = GeneralView(master=self.general_tab)
         self.current_view.pack()
 
     def clear_current_view(self):

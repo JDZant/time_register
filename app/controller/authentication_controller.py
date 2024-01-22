@@ -21,15 +21,10 @@ class AuthenticationController(BaseController):
 
     def register_user(self, email, password):
         try:
-            # Check if the user already exists
-            existing_user = User.find_by_email(email)
-            if existing_user:
-                return False, "User already exists."
-
             new_user = User()
             new_user.set_password(password)
             new_user.set_email(email)
-            new_user.save()
+            new_user.store()
 
             return True, "User registered successfully."
         except Exception as e:

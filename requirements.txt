@@ -113,3 +113,5 @@ xmldiff==2.6.3
 yt-dlp==2023.12.30
 ytmusicapi==1.4.2
 zope.interface==6.1
+
+bcrypt~=4.1.2

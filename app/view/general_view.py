@@ -1,4 +1,4 @@
-# time_registration_settings_view.py
+# general_view.py
 from datetime import datetime
 import tkinter as tk
 from tkcalendar import DateEntry
@@ -7,7 +7,7 @@ import os
 from ..services.ExternalAuthService import ExternalAuthService
 
 
-class TimeRegistrationSettingsView(tk.Frame):
+class GeneralView(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master

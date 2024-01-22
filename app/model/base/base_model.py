@@ -1,5 +1,8 @@
 class BaseModel:
-    _db_connection = None
+    def __init__(self):
+        self.db_connection = self.get_db_connection()
+        self.cursor = self.db_connection.cursor()
+        _db_connection = None
 
     @classmethod
     def set_db_connection(cls, connection):
@@ -10,7 +13,7 @@ class BaseModel:
         return cls._db_connection
 
     @classmethod
-    def save(cls):
+    def store(cls):
         # Implement saving logic in subclasses
         raise NotImplementedError
 
