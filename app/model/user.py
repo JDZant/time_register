@@ -50,3 +50,4 @@ class User(BaseModel):
                 self.id = cursor.lastrowid
         except Exception as e:
             print(f"An error occurred: {e}")
+

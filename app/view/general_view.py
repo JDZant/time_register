@@ -40,9 +40,20 @@ class GeneralView(tk.Frame, MainController):
         self.standup_duration_input = tk.Entry(self, textvariable=self.standup_duration)
         self.time_registration_duration_input = tk.Entry(self, textvariable=self.time_registration_duration)
 
+        # Set time reg config
+        self.time_reg_config = {
+            'date': self.date_input.get(),
+            'start_time': self.start_time.get(),
+            'preparation_duration': self.preparation_duration.get(),
+            'standup_duration': self.standup_duration.get(),
+            'time_registration_duration': self.time_registration_duration.get(),
+        }
+
         # Buttons
         self.start_button = tk.Button(self, text="Start", command=self.start_process)
-        self.save_as = tk.Button(self, text="Save as..", command=GeneralViewController(self.get_root).show_save_as)
+        self.save_as = tk.Button(self, text="Save as..",
+                                 command=lambda: GeneralViewController(self.get_root())
+                                 .show_save_as(self.time_reg_config))
 
         # Positioning
         self.layout_widgets()
@@ -71,19 +82,11 @@ class GeneralView(tk.Frame, MainController):
         self.save_as.grid(row=current_row, column=3, columnspan=1, padx=padx, pady=pady, sticky='ew')
 
     def start_process(self):
-        user_config = {
-            'date': self.date_input.get(),
-            'start_time': self.start_time.get(),
-            'preparation_duration': self.preparation_duration.get(),
-            'standup_duration': self.standup_duration.get(),
-            'time_registration_duration': self.time_registration_duration.get(),
-        }
-
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
         auth_service = ExternalAuthService()
         auth_service.initialize_driver()
-        auth_service.login(username, password, user_config['date'])
-        TimeRegistrationController(auth_service.get_chrome_driver(), user_config)
+        auth_service.login(username, password, self.time_reg_config['date'])
+        TimeRegistrationController(auth_service.get_chrome_driver(), self.time_reg_config)
 
 
