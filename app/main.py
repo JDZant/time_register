@@ -3,7 +3,6 @@ import os
 import tkinter as tk
 from dotenv import load_dotenv
 
-from app.controller.general_view_controller import GeneralViewController
 from app.controller.main_controller import MainController
 from app.database.database_connection_manager import DatabaseConnectionManager
 from app.database.database_connection import DatabaseConnection
@@ -26,7 +25,6 @@ def main():
     if db_connection:
         root = tk.Tk()
         root.title(os.getenv('APPLICATION_NAME'))
-        root.geometry('600x300')
 
         # Database init
         BaseModel.set_db_connection(db_connection)

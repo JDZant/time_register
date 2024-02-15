@@ -2,7 +2,6 @@ from tkinter import ttk, simpledialog
 
 from ..view.login_view import LoginView
 from ..view.general_view import GeneralView
-import tkinter as tk
 
 
 class NavigationController:
@@ -45,4 +44,3 @@ class NavigationController:
         self.clear_current_view()
         self.create_notebook()
         self.show_main_view()
-

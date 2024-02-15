@@ -13,10 +13,11 @@ class TimeRegistrationConfig(BaseModel):
         self.time_registration_duration = time_registration_duration
 
     def store(self):
-        query = 'INSERT INTO time_registration_configs (name, start_date, start_time, preparation_duration,' \
+        query = 'INSERT INTO time_registration_configurations (name, start_date, start_time, preparation_duration,' \
                 ' standup_duration, time_registration_duration) VALUES (%s, %s, %s, %s, %s, %s)'
-        val = (self.start_date, self.start_time, self.preparation_duration, self.standup_duration,
+        val = (self.name, self.start_date, self.start_time, self.preparation_duration, self.standup_duration,
                self.time_registration_duration)
+        print(val)
         try:
             with self.db_connection.cursor() as cursor:
                 cursor.execute(query, val)

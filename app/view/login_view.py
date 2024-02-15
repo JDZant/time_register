@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, PhotoImage
 from app.controller.authentication_controller import AuthenticationController
 
 
@@ -9,6 +9,10 @@ class LoginView(tk.Frame):
         self.auth_controller = AuthenticationController()
         self.on_login_success = on_login_success
 
+        original_image = PhotoImage(file='resources/images/image_auto_nitro.png')
+        self.login_image = original_image.subsample(3, 3)
+
+        self.register_label = None
         self.email_label = None
         self.email_input = None
         self.password_label = None
@@ -20,25 +24,36 @@ class LoginView(tk.Frame):
 
     def create_widgets(self):
         self.pack(anchor='center', expand=True)
+
+        # Frame for containing all login widgets, centered in the window
+        login_frame = tk.Frame(self)
+        login_frame.grid(row=0, column=0, padx=50, pady=50)
+
+        # Image at the top
+        self.image_label = tk.Label(login_frame, image=self.login_image)
+        self.image_label.image = self.login_image  # Keep a reference
+        self.image_label.grid(row=0, column=0, columnspan=2, pady=2)
+
         # Email Label and Entry
-        self.email_label = tk.Label(self, text="Nitro email")
-        self.email_label.grid(row=0, column=0, sticky="e", padx=5, pady=10)
-        self.email_input = tk.Entry(self)
-        self.email_input.grid(row=0, column=1, padx=5, pady=5)
+        self.email_label = tk.Label(login_frame, text="Email")
+        self.email_label.grid(row=1, sticky="e", padx=5)
+        self.email_input = tk.Entry(login_frame)
+        self.email_input.grid(row=1, column=1, pady=5)
 
         # Password Label and Entry
-        self.password_label = tk.Label(self, text="Nitro password")
-        self.password_label.grid(row=1, column=0, sticky="e", padx=5, pady=5)
-        self.password_input = tk.Entry(self, show="*")
-        self.password_input.grid(row=1, column=1, padx=5, pady=5)
+        self.password_label = tk.Label(login_frame, text="Password")
+        self.password_label.grid(row=2, sticky="e", padx=5)
+        self.password_input = tk.Entry(login_frame, show="*")
+        self.password_input.grid(row=2, column=1, pady=5)
 
         # Login/Register Button
-        self.action_button = tk.Button(self, text="Login", command=self.login_or_register)
-        self.action_button.grid(row=2, column=0, columnspan=2, pady=5)
+        self.action_button = tk.Button(login_frame, text="Login", command=self.login_or_register,
+                                       width=15)
+        self.action_button.grid(row=3, column=1, pady=5)
 
         # Register Account Label
-        self.register_label = tk.Label(self, text="Register Account", fg="blue", cursor="hand2")
-        self.register_label.grid(row=3, column=0, columnspan=2, pady=5)
+        self.register_label = tk.Label(login_frame, text="Register Account", fg="blue", cursor="hand2")
+        self.register_label.grid(row=4, column=0, columnspan=2, pady=5)
         self.register_label.bind("<Button-1>", self.toggle_login_register)
 
     def toggle_login_register(self, event=None):

@@ -109,7 +109,7 @@ class TimeRegistrationController:
         element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, searchbar_id)))
         element.clear()
         element.send_keys(value)
-        time.sleep(1)
+        time.sleep(2)
         element.send_keys(Keys.ENTER)
 
     def enter_time(self, id, time_value):
