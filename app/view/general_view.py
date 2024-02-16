@@ -13,6 +13,7 @@ from ..services.ExternalAuthService import ExternalAuthService
 class GeneralView(tk.Frame, MainController):
     def __init__(self, master):
         super().__init__(master)
+        self.time_reg_config = None
         self.master = master
 
         # Date
@@ -40,21 +41,9 @@ class GeneralView(tk.Frame, MainController):
         self.standup_duration_input = tk.Entry(self, textvariable=self.standup_duration)
         self.time_registration_duration_input = tk.Entry(self, textvariable=self.time_registration_duration)
 
-        # Set time reg config
-        self.time_reg_config = {
-            'date': self.date_input.get(),
-            'start_time': self.start_time.get(),
-            'preparation_duration': self.preparation_duration.get(),
-            'standup_duration': self.standup_duration.get(),
-            'time_registration_duration': self.time_registration_duration.get(),
-        }
-
         # Buttons
         self.start_button = tk.Button(self, text="Start", command=self.start_process)
-        self.save_as = tk.Button(self, text="Save as..",
-                                 command=lambda: GeneralViewController(self.get_root())
-                                 .show_save_as(self.time_reg_config))
-
+        self.save_as = tk.Button(self, text="Save as..", command=self.save_data)
         # Positioning
         self.layout_widgets()
 
@@ -89,4 +78,15 @@ class GeneralView(tk.Frame, MainController):
         auth_service.login(username, password, self.time_reg_config['date'])
         TimeRegistrationController(auth_service.get_chrome_driver(), self.time_reg_config)
 
+    def save_data(self):
+        # Update time_reg_config with the current values from the UI elements
+        self.time_reg_config = {
+            'date': self.date_input.get(),
+            'start_time': self.start_time.get(),
+            'preparation_duration': self.preparation_duration.get(),
+            'standup_duration': self.standup_duration.get(),
+            'time_registration_duration': self.time_registration_duration.get(),
+        }
+        # Call show_save_as with the updated time_reg_config
+        GeneralViewController(self.get_root()).show_save_as(self.time_reg_config)
 
