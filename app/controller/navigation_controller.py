@@ -10,7 +10,7 @@ class NavigationController:
         self.current_view = None
         self.notebook = None
         self.general_tab = None
-        self.settings_tab = None
+        self.configurations_tab = None
 
     def create_notebook(self):
         self.notebook = ttk.Notebook(self.root)
@@ -18,11 +18,11 @@ class NavigationController:
 
         # Create frames for each tab
         self.general_tab = ttk.Frame(self.notebook)
-        self.settings_tab = ttk.Frame(self.notebook)
+        self.configurations_tab = ttk.Frame(self.notebook)
 
         # Add tabs to the notebook
         self.notebook.add(self.general_tab, text='General')
-        self.notebook.add(self.settings_tab, text='Settings')
+        self.notebook.add(self.configurations_tab, text='Configurations')
 
     # Navigation
     def show_login_view(self):

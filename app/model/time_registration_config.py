@@ -17,7 +17,6 @@ class TimeRegistrationConfig(BaseModel):
                 ' standup_duration, time_registration_duration) VALUES (%s, %s, %s, %s, %s, %s)'
         val = (self.name, self.start_date, self.start_time, self.preparation_duration, self.standup_duration,
                self.time_registration_duration)
-        print(val)
         try:
             with self.db_connection.cursor() as cursor:
                 cursor.execute(query, val)
@@ -39,20 +38,20 @@ class TimeRegistrationConfig(BaseModel):
         except Exception as e:
             print(f"An error occurred: {e}")
 
-    def get_by_id(self, id):
-        query = 'SELECT name, start_date, start_time, preparation_duration,' \
-                ' standup_duration, time_registration_duration FROM time_registration_configs WHERE id = %s'
-
+    @classmethod
+    def get_by_id(cls, config_id):
+        query = ('SELECT name, start_date, start_time, preparation_duration, standup_duration, '
+                 'time_registration_duration FROM time_registration_configurations WHERE id = %s')
         try:
-            with self.db_connection.cursor() as cursor:
-                cursor.execute(query, (id,))
-                result = cursor.fetchone()
-                if result:
-                    return TimeRegistrationConfig(start_date=result[0], start_time=result[1],
-                                                  preparation_duration=result[2], standup_duration=result[3],
-                                                  time_registration_duration=result[4])
-                else:
-                    return None
+            cursor = cls._db_connection.cursor()
+            cursor.execute(query, (config_id,))
+            result = cursor.fetchone()
+            if result:
+                return cls(name=result[0], start_date=result[1], start_time=result[2],
+                           preparation_duration=result[3], standup_duration=result[4],
+                           time_registration_duration=result[5])
+            else:
+                return None
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
@@ -72,3 +71,4 @@ class TimeRegistrationConfig(BaseModel):
         except Exception as e:
             print(f"An error occurred: {e}")
             return []
+

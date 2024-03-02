@@ -9,8 +9,8 @@ class GeneralViewController(MainController):
         super().__init__(root)
         self.time_registration_config = TimeRegistrationConfig
 
-
-    def show_save_as(self, data):
+    @staticmethod
+    def show_save_as(data):
         name = simpledialog.askstring("Save Configuration", "Enter a name to save this configuration:")
         if name:
             time_reg_config = TimeRegistrationConfig(name=name,

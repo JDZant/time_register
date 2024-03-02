@@ -7,6 +7,7 @@ import os
 
 from ..controller.general_view_controller import GeneralViewController
 from ..controller.main_controller import MainController
+from ..controller.time_registration_config_controller import TimeRegistrationConfigController
 from ..services.ExternalAuthService import ExternalAuthService
 
 
@@ -47,6 +48,9 @@ class GeneralView(tk.Frame, MainController):
         # Positioning
         self.layout_widgets()
 
+        self.time_registration_config_controller = TimeRegistrationConfigController()
+        self.set_time_registration_data()
+
     def layout_widgets(self):
         current_row = 1
         padx, pady = 10, 10
@@ -70,13 +74,37 @@ class GeneralView(tk.Frame, MainController):
         self.start_button.grid(row=current_row, column=1, columnspan=1, padx=padx, pady=pady, sticky='ew')
         self.save_as.grid(row=current_row, column=3, columnspan=1, padx=padx, pady=pady, sticky='ew')
 
+    def set_time_registration_data(self):
+        config = self.time_registration_config_controller.get_time_registration_config_by_id(1)
+
+        if config:
+            start_date = datetime.strptime(config.start_date, '%Y-%m-%d')
+            self.date_input.set_date(start_date)
+
+            self.start_time.set(config.start_time)
+            self.preparation_duration.set(config.preparation_duration)
+            self.standup_duration.set(config.standup_duration)
+            self.time_registration_duration.set(config.time_registration_duration)
+        else:
+            print("Configuration not found.")
+
+    def get_time_registration_config_data(self):
+        return {
+            'date': self.date_input.get(),
+            'start_time': self.start_time.get(),
+            'preparation_duration': self.preparation_duration.get(),
+            'standup_duration': self.standup_duration.get(),
+            'time_registration_duration': self.time_registration_duration.get(),
+        }
+
     def start_process(self):
+        time_reg_config = self.get_time_registration_config_data()
         username = os.getenv('TIME_REG_USER')
         password = os.getenv('TIME_REG_PASS')
         auth_service = ExternalAuthService()
         auth_service.initialize_driver()
-        auth_service.login(username, password, self.time_reg_config['date'])
-        TimeRegistrationController(auth_service.get_chrome_driver(), self.time_reg_config)
+        auth_service.login(username, password, time_reg_config['date'])
+        TimeRegistrationController(auth_service.get_chrome_driver(), time_reg_config)
 
     def save_data(self):
         # Update time_reg_config with the current values from the UI elements
@@ -89,4 +117,3 @@ class GeneralView(tk.Frame, MainController):
         }
         # Call show_save_as with the updated time_reg_config
         GeneralViewController(self.get_root()).show_save_as(self.time_reg_config)
-

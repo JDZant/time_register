@@ -1,7 +1,9 @@
 class BaseModel:
+    _db_connection = None
+
     def __init__(self):
         self.db_connection = self.get_db_connection()
-        self.cursor = self.db_connection.cursor()
+        self.cursor = self.db_connection.cursor() if self.db_connection else None
         _db_connection = None
 
     @classmethod
@@ -10,6 +12,8 @@ class BaseModel:
 
     @classmethod
     def get_db_connection(cls):
+        if cls._db_connection is None:
+            raise ValueError("Database connection is not set.")
         return cls._db_connection
 
     @classmethod
