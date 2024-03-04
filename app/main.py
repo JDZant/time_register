@@ -3,12 +3,11 @@ import os
 import tkinter as tk
 from dotenv import load_dotenv
 
-from app.controller.base.base_controller import BaseController
+from app.controller.main_controller import MainController
+from app.database.database_connection_manager import DatabaseConnectionManager
 from app.database.database_connection import DatabaseConnection
 from app.model.base.base_model import BaseModel
-from app.controller.view_controller import ViewController
-
-from app.view.login_view import LoginView
+from app.controller.navigation_controller import NavigationController
 
 # Load environment variables
 load_dotenv()
@@ -26,13 +25,18 @@ def main():
     if db_connection:
         root = tk.Tk()
         root.title(os.getenv('APPLICATION_NAME'))
-        root.geometry('600x300')
 
-        view_controller = ViewController(root)
-        view_controller.show_login_view()
-
+        # Database init
         BaseModel.set_db_connection(db_connection)
-        BaseController.set_db_connection(db_connection)
+        DatabaseConnectionManager.set_db_connection(db_connection)
+
+        # ViewController init
+        MainController(root)
+        navigation_controller = NavigationController(root)
+
+        # Show login view
+        navigation_controller.show_login_view()
+
         root.mainloop()
     else:
         print("Failed to connect to the database")

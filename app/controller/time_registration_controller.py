@@ -37,7 +37,7 @@ class TimeRegistrationController:
             "search_bar_id_2": 's2id_autogen4_search',
             "search_bar_value_2": 'Overige werkzaamheden (specificeer)',
 
-            "description": "Opstarten pc/laptop, klaarzetten werkomgeving, dag voorbereiden",
+            "description": "Klaarzetten werkomgeving, dag voorbereiden",
             "description_index": 0,
         }
 
@@ -109,7 +109,7 @@ class TimeRegistrationController:
         element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, searchbar_id)))
         element.clear()
         element.send_keys(value)
-        time.sleep(1)
+        time.sleep(2)
         element.send_keys(Keys.ENTER)
 
     def enter_time(self, id, time_value):
@@ -140,7 +140,6 @@ class TimeRegistrationController:
             EC.presence_of_all_elements_located(
                 (By.XPATH, '//input[@type="text"][@placeholder="omschrijving"][@ng-model="model.description"]'))
         )
-        print(description_fields)
         if 0 <= input_index < len(description_fields):
             description_field = description_fields[input_index]
             description_field.clear()
