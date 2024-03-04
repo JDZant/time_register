@@ -1,11 +1,13 @@
 from tkinter import ttk, simpledialog
 
+from ..view.configurations_view import ConfigurationsView
 from ..view.login_view import LoginView
 from ..view.general_view import GeneralView
 
 
 class NavigationController:
     def __init__(self, root):
+        self.configurations_view = None
         self.root = root
         self.current_view = None
         self.notebook = None
@@ -30,7 +32,7 @@ class NavigationController:
         self.current_view = LoginView(master=self.root, on_login_success=self.setup_main_menu)
         self.current_view.pack()
 
-    def show_main_view(self):
+    def show_general_view(self):
         self.clear_current_view()
         self.current_view = GeneralView(master=self.general_tab)
         self.current_view.pack()
@@ -40,7 +42,18 @@ class NavigationController:
             self.current_view.destroy()
             self.current_view = None
 
+    def show_configurations_view(self):
+        # Clear the configurations tab before adding new content
+        for widget in self.configurations_tab.winfo_children():
+            widget.destroy()
+
+        # Create and pack the ConfigurationsView
+        self.configurations_view = ConfigurationsView(master=self.configurations_tab)
+        self.configurations_view.pack(expand=True, fill='both')
+
     def setup_main_menu(self):
         self.clear_current_view()
         self.create_notebook()
-        self.show_main_view()
+        self.show_general_view()
+        self.show_configurations_view()
+

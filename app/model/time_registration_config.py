@@ -2,9 +2,10 @@ from ..model.base.base_model import BaseModel
 
 
 class TimeRegistrationConfig(BaseModel):
-    def __init__(self,name=None, start_date=None, start_time=None, preparation_duration=None, standup_duration=None,
+    def __init__(self, id=None, name=None, start_date=None, start_time=None, preparation_duration=None, standup_duration=None,
                  time_registration_duration=None):
         super().__init__()
+        self.id = id
         self.name = name
         self.start_date = start_date
         self.start_time = start_time
@@ -56,18 +57,18 @@ class TimeRegistrationConfig(BaseModel):
             print(f"An error occurred: {e}")
             return None
 
-    def get_all(self):
-        query = 'SELECT id, name, start_date, start_time, preparation_duration,' \
-                ' standup_duration, time_registration_duration FROM time_registration_configs'
-
+    @classmethod
+    def get_all(cls):
+        query = ('SELECT id, name, start_date, start_time, preparation_duration, standup_duration, '
+                 'time_registration_duration FROM time_registration_configurations')
         try:
-            with self.db_connection.cursor() as cursor:
+            # Use the class method to get the database connection
+            db_connection = cls.get_db_connection()
+            with db_connection.cursor() as cursor:
                 cursor.execute(query)
                 results = cursor.fetchall()
-                return [TimeRegistrationConfig(start_date=row[1], start_time=row[2],
-                                               preparation_duration=row[3], standup_duration=row[4],
-                                               time_registration_duration=row[5])
-                        for row in results]
+                return [cls(id=row[0], name=row[1], start_date=row[2], start_time=row[3], preparation_duration=row[4],
+                            standup_duration=row[5], time_registration_duration=row[6]) for row in results]
         except Exception as e:
             print(f"An error occurred: {e}")
             return []

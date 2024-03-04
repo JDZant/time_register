@@ -37,7 +37,7 @@ class TimeRegistrationController:
             "search_bar_id_2": 's2id_autogen4_search',
             "search_bar_value_2": 'Overige werkzaamheden (specificeer)',
 
-            "description": "Opstarten pc/laptop, klaarzetten werkomgeving, dag voorbereiden",
+            "description": "Klaarzetten werkomgeving, dag voorbereiden",
             "description_index": 0,
         }
 
