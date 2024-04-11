@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 
 from app.database.database_connection_manager import DatabaseConnectionManager
 from ..model.user import User
-from ..services.ExternalAuthService import ExternalAuthService
+from ..services.external_auth_service import ExternalAuthService
 
 load_dotenv()
 

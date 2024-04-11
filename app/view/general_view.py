@@ -8,7 +8,7 @@ import os
 from ..controller.general_view_controller import GeneralViewController
 from ..controller.main_controller import MainController
 from ..controller.time_registration_config_controller import TimeRegistrationConfigController
-from ..services.ExternalAuthService import ExternalAuthService
+from ..services.external_auth_service import ExternalAuthService
 
 
 class GeneralView(tk.Frame, MainController):
@@ -75,7 +75,7 @@ class GeneralView(tk.Frame, MainController):
         self.save_as.grid(row=current_row, column=3, columnspan=1, padx=padx, pady=pady, sticky='ew')
 
     def set_time_registration_data(self):
-        config = self.time_registration_config_controller.get_time_registration_config_by_id(1)
+        config = self.time_registration_config_controller.get_time_registration_config_by_id(2)
 
         if config:
             start_date = datetime.strptime(config.start_date, '%Y-%m-%d')
