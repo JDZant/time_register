@@ -14,7 +14,6 @@ class ExternalAuthService:
         pass
 
     def initialize_driver(self):
-        # Initialize the Selenium WebDriver only if it hasn't been initialized already
         if self.driver is None:
             service = Service('/usr/bin/chromedriver')
             self.driver = webdriver.Chrome(service=service)
@@ -24,11 +23,8 @@ class ExternalAuthService:
 
     @staticmethod
     def authenticate(username, password):
-        # Use Selenium to log in to the external time registration website.
-        # This is just a placeholder for the actual logic.
-        driver = webdriver.Chrome()  # Or however you configure your driver
-        # ... perform actions to log in ...
-        success = True  # Change based on actual success or failure
+        driver = webdriver.Chrome()
+        success = True
         return success
 
     def login(self, username, password, date):

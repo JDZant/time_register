@@ -1,4 +1,4 @@
-class BaseController:
+class DatabaseConnectionManager:
     _db_connection = None
 
     @classmethod

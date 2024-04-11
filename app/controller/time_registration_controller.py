@@ -11,6 +11,9 @@ class TimeRegistrationController:
     def __init__(self, driver, user_config):
         self.driver = driver
 
+        # TODO Add the data to a model and store it in the database.
+        # TODO Get rid of the id's to select the inputs and rewrite the code so it uses tab to switch
+
         # Default time between placeholders (hours)
         self.placeholder_interval = 1
 
@@ -31,11 +34,11 @@ class TimeRegistrationController:
             "search_bar_id_1": 's2id_autogen2_search',
             "search_bar_value_1": '24005',
 
-            "select_id_2": 's2id_autogen3',
-            "search_bar_id_2": 's2id_autogen4_search',
+            "select_id_2": 's2id_autogen10',
+            "search_bar_id_2": 's2id_autogen11_search',
             "search_bar_value_2": 'Overige werkzaamheden (specificeer)',
 
-            "description": "Opstarten pc/laptop, klaarzetten werkomgeving, dag voorbereiden",
+            "description": "Klaarzetten werkomgeving, dag voorbereiden",
             "description_index": 0,
         }
 
@@ -50,8 +53,8 @@ class TimeRegistrationController:
             "search_bar_id_1": 's2id_autogen6_search',
             "search_bar_value_1": '24005',
 
-            "select_id_2": 's2id_autogen7',
-            "search_bar_id_2": 's2id_autogen8_search',
+            "select_id_2": 's2id_autogen24',
+            "search_bar_id_2": 's2id_autogen25_search',
             "search_bar_value_2": 'Vergaderen en stand-up',
 
             "description": "Stand-up",
@@ -65,12 +68,12 @@ class TimeRegistrationController:
             "end_time_value": self.calculate_time(standup_data['end_time_value'],
                                                   'minutes', user_config['time_registration_duration']),
 
-            "select_id_1": 's2id_autogen18',
-            "search_bar_id_1": 's2id_autogen19_search',
+            "select_id_1": 's2id_autogen20',
+            "search_bar_id_1": 's2id_autogen21_search',
             "search_bar_value_1": '24001',
 
-            "select_id_2": 's2id_autogen20',
-            "search_bar_id_2": 's2id_autogen21_search',
+            "select_id_2": 's2id_autogen38',
+            "search_bar_id_2": 's2id_autogen39_search',
             "search_bar_value_2": 'Bijwerken eigen tijdregistratie',
 
             "description": "Bijwerken eigen tijdregistratie",
@@ -107,7 +110,7 @@ class TimeRegistrationController:
         element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, searchbar_id)))
         element.clear()
         element.send_keys(value)
-        time.sleep(1)
+        time.sleep(2)
         element.send_keys(Keys.ENTER)
 
     def enter_time(self, id, time_value):
@@ -127,18 +130,17 @@ class TimeRegistrationController:
         # Prepare the time delta arguments
         time_delta_args = {format_value: integer_value}
 
-        # Add one hour to start_time_obj
         result_time_obj = start_time_obj + timedelta(**time_delta_args)
 
-        # Format end_time_obj back to a string and return it
         return result_time_obj.strftime("%H:%M")
+
+    # TODO find a way to reliable find the inputs, the way it is done now is language dependent
 
     def enter_description_data(self, description_text, input_index):
         description_fields = WebDriverWait(self.driver, 10).until(
             EC.presence_of_all_elements_located(
                 (By.XPATH, '//input[@type="text"][@placeholder="omschrijving"][@ng-model="model.description"]'))
         )
-        print(description_fields)
         if 0 <= input_index < len(description_fields):
             description_field = description_fields[input_index]
             description_field.clear()

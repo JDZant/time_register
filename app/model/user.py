@@ -9,8 +9,6 @@ class User(BaseModel):
         self.id = None
         self.password = None
         self.email = None
-        self.db_connection = self.get_db_connection()
-        self.cursor = self.db_connection.cursor()
 
     def delete(self):
         query = "DELETE FROM users WHERE id = %s"
@@ -42,7 +40,7 @@ class User(BaseModel):
             print(f"An error occurred: {e}")
             return False
 
-    def save(self):
+    def store(self):
         query = "INSERT INTO users (email, password) VALUES (%s, %s)"
         val = (self.email, self.password)
         try:
@@ -52,3 +50,4 @@ class User(BaseModel):
                 self.id = cursor.lastrowid
         except Exception as e:
             print(f"An error occurred: {e}")
+

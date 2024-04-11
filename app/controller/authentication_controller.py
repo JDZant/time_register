@@ -1,13 +1,13 @@
 from dotenv import load_dotenv
 
-from app.controller.base.base_controller import BaseController
+from app.database.database_connection_manager import DatabaseConnectionManager
 from ..model.user import User
-from ..services.ExternalAuthService import ExternalAuthService
+from ..services.external_auth_service import ExternalAuthService
 
 load_dotenv()
 
 
-class AuthenticationController(BaseController):
+class AuthenticationController(DatabaseConnectionManager):
     def __init__(self):
         self.external_auth_service = ExternalAuthService()
 
@@ -21,15 +21,10 @@ class AuthenticationController(BaseController):
 
     def register_user(self, email, password):
         try:
-            # Check if the user already exists
-            existing_user = User.find_by_email(email)
-            if existing_user:
-                return False, "User already exists."
-
             new_user = User()
             new_user.set_password(password)
             new_user.set_email(email)
-            new_user.save()
+            new_user.store()
 
             return True, "User registered successfully."
         except Exception as e:
