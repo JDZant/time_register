@@ -17,6 +17,14 @@ class GeneralView(tk.Frame, MainController):
         self.time_reg_config = None
         self.master = master
 
+        # Initialize user input variables
+        self.username = tk.StringVar(None)
+        self.password = tk.StringVar(None)
+
+        # Set default values from environment variables
+        self.username.set(os.getenv('TIME_REG_USER', ''))  # Default to empty string if not set
+        self.password.set(os.getenv('TIME_REG_PASS', ''))
+
         # Date
         self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,
                                     month=datetime.now().month, day=datetime.now().day)
@@ -35,16 +43,21 @@ class GeneralView(tk.Frame, MainController):
         self.preparation_duration_label = tk.Label(self, text="Preparation duration (min)")
         self.standup_duration_label = tk.Label(self, text="Standup duration (min)")
         self.time_registration_duration_label = tk.Label(self, text="Time registration duration (min)")
+        self.username_label = tk.Label(self, text="Nitro username")
+        self.password_label = tk.Label(self, text="Nitro password")
 
         # Inputs
         self.start_time_input = tk.Entry(self, textvariable=self.start_time)
         self.preparation_duration_input = tk.Entry(self, textvariable=self.preparation_duration)
         self.standup_duration_input = tk.Entry(self, textvariable=self.standup_duration)
         self.time_registration_duration_input = tk.Entry(self, textvariable=self.time_registration_duration)
+        self.username_input = tk.Entry(self, textvariable=self.username)
+        self.password_input = tk.Entry(self, textvariable=self.password, show="*")
 
         # Buttons
         self.start_button = tk.Button(self, text="Start", command=self.start_process)
         self.save_as = tk.Button(self, text="Save as..", command=self.save_data)
+
         # Positioning
         self.layout_widgets()
 
@@ -57,6 +70,8 @@ class GeneralView(tk.Frame, MainController):
 
         # List of widget pairs (label, input) for easy iteration
         widget_pairs = [
+            (self.username_label, self.username_input),
+            (self.password_label, self.password_input),
             (self.date_label, self.date_input),
             (self.start_time_label, self.start_time_input),
             (self.preparation_duration_label, self.preparation_duration_input),
@@ -99,8 +114,8 @@ class GeneralView(tk.Frame, MainController):
 
     def start_process(self):
         time_reg_config = self.get_time_registration_config_data()
-        username = os.getenv('TIME_REG_USER')
-        password = os.getenv('TIME_REG_PASS')
+        username = self.username.get()
+        password = self.password.get()
         auth_service = ExternalAuthService()
         auth_service.initialize_driver()
         auth_service.login(username, password, time_reg_config['date'])

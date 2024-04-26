@@ -1,7 +1,6 @@
 from tkinter import ttk, simpledialog
 
 from ..view.configurations_view import ConfigurationsView
-from ..view.login_view import LoginView
 from ..view.general_view import GeneralView
 
 
