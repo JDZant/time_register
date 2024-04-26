@@ -24,22 +24,6 @@ class User(BaseModel):
     def set_email(self, email):
         self.email = email
 
-    def auth(self, email, password):
-        query = "SELECT email, password FROM users WHERE email = %s"
-        try:
-            with self.db_connection.cursor() as cursor:
-                cursor.execute(query, (email,))
-                result = cursor.fetchone()
-
-            if result:
-                stored_password = result[1].encode('utf-8')
-                return bcrypt.checkpw(password.encode('utf-8'), stored_password)
-            return False
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return False
-
     def store(self):
         query = "INSERT INTO users (email, password) VALUES (%s, %s)"
         val = (self.email, self.password)

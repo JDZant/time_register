@@ -24,6 +24,7 @@ def main():
     db_connection = DatabaseConnection.get_instance(db_config)
     if db_connection:
         root = tk.Tk()
+        root.geometry('600x400')
         root.title(os.getenv('APPLICATION_NAME'))
 
         # Database init
@@ -35,7 +36,7 @@ def main():
         navigation_controller = NavigationController(root)
 
         # Show login view
-        navigation_controller.show_login_view()
+        navigation_controller.setup_main_menu()
 
         root.mainloop()
     else:
