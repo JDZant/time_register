@@ -53,7 +53,6 @@ class ConfigurationsView(tk.Frame):
 
         # Insert items into the treeview
         for config in configs:
-            print(config)
             self.tree.insert('', 'end', values=(config.id, config.name, config.start_date, config.start_time,
                                                 config.preparation_duration, config.standup_duration,
                                                 config.time_registration_duration))

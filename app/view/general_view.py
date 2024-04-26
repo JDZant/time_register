@@ -26,7 +26,7 @@ class GeneralView(tk.Frame, MainController):
         self.password.set(os.getenv('TIME_REG_PASS', ''))
 
         # Date
-        self.date_input = DateEntry(self, date_pattern='y-mm-dd', year=datetime.now().year,
+        self.date_input = DateEntry(self, date_pattern='dd-mm-y', year=datetime.now().year,
                                     month=datetime.now().month, day=datetime.now().day)
 
         # Start time
@@ -90,12 +90,9 @@ class GeneralView(tk.Frame, MainController):
         self.save_as.grid(row=current_row, column=3, columnspan=1, padx=padx, pady=pady, sticky='ew')
 
     def set_time_registration_data(self):
-        config = self.time_registration_config_controller.get_time_registration_config_by_id(2)
+        config = self.time_registration_config_controller.get_time_registration_config_by_id(1)
 
         if config:
-            start_date = datetime.strptime(config.start_date, '%Y-%m-%d')
-            self.date_input.set_date(start_date)
-
             self.start_time.set(config.start_time)
             self.preparation_duration.set(config.preparation_duration)
             self.standup_duration.set(config.standup_duration)
