@@ -1,7 +1,7 @@
 from tkinter import ttk, simpledialog
 
-from ..view.configurations_view import ConfigurationsView
-from ..view.general_view import GeneralView
+from app.view.configurations_view import ConfigurationsView
+from app.view.general_view import GeneralView
 
 
 class NavigationController:

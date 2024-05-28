@@ -1,4 +1,3 @@
-# main.py (or wherever your main function resides)
 import os
 import tkinter as tk
 from dotenv import load_dotenv
