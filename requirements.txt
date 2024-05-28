@@ -1,12 +1,12 @@
 altgraph==0.17.4
 annotated-types==0.6.0
-apparmor==3.1.6
-application-utility==1.3.2
+# apparmor==3.1.6 - Install via system package manager (e.g., apt, pacman)
+# application-utility==1.3.2
 attrs==23.1.0
 autocommand==2.2.2
 Automat==22.10.0
 Babel==2.14.0
-btrfsutil==6.6.3
+# btrfsutil==6.6.3 - Install via system package manager
 certifi==2023.11.17
 cffi==1.16.0
 chardet==5.2.0
@@ -15,9 +15,9 @@ click==8.1.7
 constantly==15.1.0
 contourpy==1.2.0
 cryptography==41.0.7
-cupshelpers==1.0
+# cupshelpers==1.0 - Likely a system utility for CUPS, manage system-wide
 cycler==0.12.1
-dbus-python==1.3.2
+# dbus-python==1.3.2 - Install via system package manager
 distro==1.9.0
 docopt==0.6.2
 execnet==2.0.2
@@ -33,28 +33,28 @@ injector==0.21.0
 jaraco.context==4.3.0
 jaraco.functools==3.9.0
 jaraco.text==3.12.0
-keyutils==0.6
+#keyutils
 kiwisolver==1.4.5
-LibAppArmor==3.1.6
-libmsym==0.2.4
-lit==16.0.6.dev0
-lxml==4.9.2
+# LibAppArmor==3.1.6 - Install via system package manager
+# libmsym==0.2.4 - Likely needs to be managed system-wide
+lit==16.0.6
+# lxml==4.9.2
 Mako==1.3.0
-manjaro-sdk==0.1.1
+# manjaro-sdk==0.1.1 - Specific to Manjaro, manage via system package manager
 Markdown==3.5.1
 MarkupSafe==2.1.3
 matplotlib==3.8.2
 meson==1.3.1
 more-itertools==10.1.0
 mysql-connector-python==8.3.0
-netsnmp-python==1.0a1
-nftables==0.1
+# netsnmp-python==1.0a1 - SNMP library, typically managed system-wide
+# nftables==0.1 - System firewall tool, install via system package manager
 npyscreen==4.10.5
 numpy==1.26.3
 ordered-set==4.1.0
 outcome==1.3.0.post0
 packaging==23.2
-pacman_mirrors==4.24.0
+# pacman_mirrors==4.24.0 - Manjaro-specific, install via system package manager
 peewee==3.16.3
 pillow==10.2.0
 platformdirs==4.1.0
@@ -75,7 +75,7 @@ pyparsing==3.1.1
 PyQt5==5.15.10
 PyQt5-sip==12.13.0
 PySide6==6.6.1
-pysmbc==1.0.25.1
+# pysmbc==1.0.25.1 - Samba client library, likely needs system installation
 PySocks==1.7.1
 pytest==7.4.4
 pytest-xdist==3.5.0
@@ -92,22 +92,22 @@ selenium==4.16.0
 shiboken6==6.6.1
 shiboken6-generator==6.6.1
 six==1.16.0
-smbus==1.1
+# smbus==1.1 - System Management Bus, install via system package manager
 sniffio==1.3.0
 sortedcontainers==2.4.0
-systemd-python==235
-TBB==0.2
+# systemd-python==235 - Interface for systemd, install via system package manager
+# TBB==0.2 - Intel Threading Building Blocks, manage via system package manager
 tkcalendar==1.6.1
 tomli==2.0.1
 tqdm==4.66.1
 trio==0.24.0
 trio-websocket==0.11.1
-trove-classifiers==2024.1.9
+
 Twisted==22.10.0
 typing_extensions==4.9.0
 udiskie==2.5.1
 urllib3==1.26.18
-validate-pyproject==0.13.post1.dev0+gb752273.d20230520
+validate-pyproject
 wsproto==1.2.0
 xmldiff==2.6.3
 yt-dlp==2023.12.30
